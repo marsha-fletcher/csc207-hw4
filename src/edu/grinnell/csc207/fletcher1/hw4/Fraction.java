@@ -52,11 +52,13 @@ public class Fraction {
      ***************************************************************/
     
     private void simplify(){
-	//STUB
+	BigInteger gcd = numerator.gcd(denominator);
+	denominator = denominator.divide(gcd);
+	numerator = numerator.divide(gcd);
+	this.cleanup();
     }//simplify()
     
     private void cleanup(){
-	//STUB
     }//cleanup
     /***************************************************************
      *-----------------------Public Methods------------------------*
@@ -64,7 +66,13 @@ public class Fraction {
     //OPERATIONS
     
     public Fraction add(Fraction other){
-	//STUB
+	
+	BigInteger oldDenominator = denominator;
+	denominator = denominator.multiply(other.denominator);
+	numerator = other.denominator.multiply(numerator);
+	BigInteger toAdd = other.numerator.multiply(oldDenominator);
+	numerator = numerator.add(toAdd);
+	this.simplify();
 	return null;
     }//add(Fraction)    
     
@@ -74,7 +82,9 @@ public class Fraction {
        }//add(Fraction)
     
     public Fraction multiply(Fraction other){
-   	//STUB
+	numerator = numerator.multiply(other.numerator);
+	denominator = denominator.multiply(other.denominator);
+	this.simplify();
    	return null;
        }//add(Fraction)
     
