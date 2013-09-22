@@ -5,16 +5,25 @@ import java.math.*;
 /**
  * 
  * @author Marsha Fletcher
+ * @author Evan Manuella
  * @author Daniel Nanetti-Palacios
- *
+ * @author Brennan Wallace
  */
 
 public class Fraction {
     BigInteger numerator;
     BigInteger denominator;
+    
     /***************************************************************
      *------------------------Constructors-------------------------*
      ***************************************************************/
+    
+    /**
+     * Fraction(int, int)
+     * @param num, an int
+     * @param denom, a non zero int
+     * @throws Exception when denom = 0
+     */
     public Fraction(int num, int denom) throws Exception{
 	if (denom == 0){
 	    throw new Exception("The denominator cannot be zero");
@@ -22,15 +31,24 @@ public class Fraction {
 	this.numerator = BigInteger.valueOf(num);
 	this.denominator = BigInteger.valueOf(denom);
 	
-	this.cleanup();
 	this.simplify();
     }//Fraction(int, int)
     
+    /**
+     * Fraction(int)
+     * @param num, an int
+     */
     public Fraction (int num){
 	this.numerator = BigInteger.valueOf(num);
 	this.denominator = BigInteger.ONE;
     }//Fraction(int)
     
+    /**
+     * Fraction(BigInteger, BigInteger)
+     * @param num, a BigInteger
+     * @param denom, a non zero BigInteger
+     * @throws Exception when denom = 0
+     */
     public Fraction (BigInteger num, BigInteger denom) throws Exception{
 	if (denom == BigInteger.ZERO){
 		throw new Exception("The denominator cannot be zero");
@@ -41,26 +59,62 @@ public class Fraction {
 	this.simplify();
     }//Fraction(BigInt, BigInt)
     
+    /**
+     * Fraction(BigInteger)
+     * @param num, a BigInteger
+     */
     public Fraction (BigInteger num){
 	this.numerator = num;
 	this.denominator = BigInteger.ONE;
     }//Fraction(BigInt)
     
+    /**
+     * Fraction(long, long)
+     * @param num, a long
+     * @param denom, a non zero long
+     * @throws Exception when denom = 0
+     */
     public Fraction (long num, long denom) throws Exception{
 	if (denom == 0){
 	    throw new Exception("The denominator cannot be zero");
 	}
 	this.numerator = BigInteger.valueOf(num);
 	this.denominator = BigInteger.valueOf(denom);
+	this.simplify();
     }//Fraction(long, long)
     
+    /**
+     * Fraction(long)
+     * @param num, a long
+     */
     public Fraction (long num){
 	this.numerator = BigInteger.valueOf(num);
 	this.denominator = BigInteger.ONE;
     }//Fraction(long)
-
+    
+    /**
+     * Fraction(double)
+     * @param num, a double
+     */
     public Fraction (double val){
-	
+	String valStr = String.valueOf(val);
+	int dotIndex = valStr.indexOf('.');
+	int len = valStr.length();
+	if (dotIndex < 0){ //if val doesn't have a decimal part, ie val = 5
+	    this.numerator = BigInteger.valueOf((long) val);
+	    this.denominator = BigInteger.ONE;
+	} else if (dotIndex > 0){
+	    BigInteger wholePart = new BigInteger(valStr.substring(0, dotIndex));
+	    BigInteger decPart = new BigInteger(valStr.substring(dotIndex+1, len));
+
+	    BigInteger decPlaces = BigInteger.valueOf(len - dotIndex + 1);
+	    this.denominator = BigInteger.TEN.multiply(decPlaces);
+	    this.numerator = decPart.add(wholePart.multiply(this.denominator));
+	    this.simplify();
+	} else {
+	    this.numerator = new BigInteger(valStr.substring(1, len));
+	    this.denominator = BigInteger.TEN.multiply(BigInteger.valueOf(len - 1));
+	}
     }//Fraction(double)
     
     public Fraction (String val) throws Exception{
@@ -72,12 +126,24 @@ public class Fraction {
 	    this.denominator = new BigInteger(val.substring(slashIndex + 1, len));
 	    if (this.denominator == BigInteger.ZERO){
 		throw new Exception("The denominator cannot be zero");
-	    }
+	    }//Check for denominator = 0
+	    this.simplify();
 	}else {
 	//Case where the string is in the format "#.#"
 	    int dotIndex = val.indexOf('.');
 	    if(dotIndex >= 0){
-		//STUB
+		if (dotIndex == 0){
+		    this.numerator = new BigInteger(val.substring(1, len));
+		    this.denominator = BigInteger.TEN.multiply(BigInteger.valueOf(len - 1)); 
+		} else {
+		    BigInteger wholePart = new BigInteger(val.substring(0, dotIndex));
+		    BigInteger decPart = new BigInteger(val.substring(dotIndex+1, len));
+
+		    BigInteger decPlaces = BigInteger.valueOf(len - dotIndex + 1);
+		    this.denominator = BigInteger.TEN.multiply(decPlaces);
+		    this.numerator = decPart.add(wholePart.multiply(this.denominator));
+		    this.simplify(); 
+		}
 	    } else {
 	    //Else assume the string is in the format "##" (just a numerator)
 		this.numerator = new BigInteger(val);
