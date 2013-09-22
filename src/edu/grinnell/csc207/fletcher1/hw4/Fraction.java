@@ -16,35 +16,74 @@ public class Fraction {
      *------------------------Constructors-------------------------*
      ***************************************************************/
     public Fraction(int num, int denom) throws Exception{
-	//STUB
+	if (denom == 0){
+	    throw new Exception("The denominator cannot be zero");
+	}
+	this.numerator = BigInteger.valueOf(num);
+	this.denominator = BigInteger.valueOf(denom);
+	
+	this.cleanup();
+	this.simplify();
     }//Fraction(int, int)
     
     public Fraction (int num){
-	//STUB
+	this.numerator = BigInteger.valueOf(num);
+	this.denominator = BigInteger.ONE;
     }//Fraction(int)
     
     public Fraction (BigInteger num, BigInteger denom) throws Exception{
-	//STUB
+	if (denom == BigInteger.ZERO){
+		throw new Exception("The denominator cannot be zero");
+	    }
+	
+	this.numerator = num;
+	this.denominator = denom;
+	this.simplify();
     }//Fraction(BigInt, BigInt)
     
     public Fraction (BigInteger num){
-	//STUB
+	this.numerator = num;
+	this.denominator = BigInteger.ONE;
     }//Fraction(BigInt)
     
     public Fraction (long num, long denom) throws Exception{
-	//STUB
+	if (denom == 0){
+	    throw new Exception("The denominator cannot be zero");
+	}
+	this.numerator = BigInteger.valueOf(num);
+	this.denominator = BigInteger.valueOf(denom);
     }//Fraction(long, long)
     
     public Fraction (long num){
-	//STUB
+	this.numerator = BigInteger.valueOf(num);
+	this.denominator = BigInteger.ONE;
     }//Fraction(long)
 
     public Fraction (double val){
-	//STUB
+	
     }//Fraction(double)
     
     public Fraction (String val) throws Exception{
-	//STUB
+	int len  = val.length();
+	int slashIndex = val.indexOf('/');
+	//Case where the string is in the format "#/#"
+	if(slashIndex > 0){
+	    this.numerator = new BigInteger(val.substring(0, slashIndex));
+	    this.denominator = new BigInteger(val.substring(slashIndex + 1, len));
+	    if (this.denominator == BigInteger.ZERO){
+		throw new Exception("The denominator cannot be zero");
+	    }
+	}else {
+	//Case where the string is in the format "#.#"
+	    int dotIndex = val.indexOf('.');
+	    if(dotIndex >= 0){
+		//STUB
+	    } else {
+	    //Else assume the string is in the format "##" (just a numerator)
+		this.numerator = new BigInteger(val);
+		this.denominator = BigInteger.ONE;
+	    }
+	}//else	
     }//Fraction (String)
     
     /***************************************************************
@@ -56,7 +95,10 @@ public class Fraction {
     }//simplify()
     
     private void cleanup(){
-	//STUB
+	if (this.denominator.compareTo(BigInteger.ZERO) < 0){
+	    this.denominator = this.denominator.negate();
+	    this.numerator = this.numerator.negate();
+	}//if
     }//cleanup
     /***************************************************************
      *-----------------------Public Methods------------------------*
@@ -134,9 +176,13 @@ public class Fraction {
 	return this.numerator + "/" + this.denominator;
     }//toString()
     
-    public Fraction clone(){
-	//Standard method clone does not throw exceptions. Our constructor does.
-	//return new Fraction(this.numerator, this.denominator);
+    public Fraction clone() {
+	//We're using a try catch block because clone yells at us if we say 
+	//throws Exception, but our constructor yells at us if we don't
+	try {
+	    return new Fraction (this.numerator, this.denominator);
+	} catch (Exception e){}
+	
 	return null;
     }//clone()
     
