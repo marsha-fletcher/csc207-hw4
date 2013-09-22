@@ -113,16 +113,10 @@ public class Fraction {
 	    this.simplify();
 	} else {
 	    this.numerator = new BigInteger(valStr.substring(1, len));
-	    this.denominator = BigInteger.TEN.pow(len - 1);
-	}//if/elseif/else
+	    this.denominator = BigInteger.TEN.multiply(BigInteger.valueOf(len - 1));
+	}
     }//Fraction(double)
-    /**
-     * Fraction(String)
-     * @param val, a string in the form "#/#", "#.#", ".##", or "##", where # is a numeral
-     * @throws Exception when a string is in the form "#/0"
-     * @Precondition The string must be in one of the following forms:
-     * "#/#", "#.#", ".##", or "##" (where # is a numeral)
-     */
+    
     public Fraction (String val) throws Exception{
 	int len  = val.length();
 	int slashIndex = val.indexOf('/');
@@ -140,11 +134,11 @@ public class Fraction {
 	    if(dotIndex >= 0){
 		if (dotIndex == 0){
 		    this.numerator = new BigInteger(val.substring(1, len));
-		    this.denominator = BigInteger.TEN.pow(len - 1); 
+		    this.denominator = BigInteger.TEN.multiply(BigInteger.valueOf(len - 1)); 
 		} else {
 		    BigInteger wholePart = new BigInteger(val.substring(0, dotIndex));
 		    BigInteger decPart = new BigInteger(val.substring(dotIndex+1, len));
-
+		    
 		    int decPlaces = len - (dotIndex + 1);
 		    this.denominator = BigInteger.TEN.pow(decPlaces);
 		    this.numerator = decPart.add(wholePart.multiply(this.denominator));
@@ -162,10 +156,6 @@ public class Fraction {
      *-----------------------Private Methods-----------------------*
      ***************************************************************/
     
-    /**
-     * simplify
-     * Modifies the numerator and denominator so that the fraction is in its simplest form
-     */
     private void simplify(){
 	BigInteger gcd = numerator.gcd(denominator);
 	denominator = denominator.divide(gcd);
@@ -173,10 +163,6 @@ public class Fraction {
 	this.cleanup();
     }//simplify()
     
-    /**
-     * cleanup
-     * Currently makes sure that the negative sign is in the numerator, not the denominator
-     */
     private void cleanup(){
 	if (this.denominator.compareTo(BigInteger.ZERO) < 0){
 	    this.denominator = this.denominator.negate();
@@ -188,11 +174,6 @@ public class Fraction {
      ***************************************************************/
     //OPERATIONS
     
-    /**
-     * add (Fraction)
-     * @param other
-     * @return the sum of the current Fraction and other
-     */
     public Fraction add(Fraction other){
 	
 	BigInteger oldDenominator = denominator;
@@ -204,41 +185,34 @@ public class Fraction {
 	return null;
     }//add(Fraction)    
     
-    /**
-     * subtract(Fraction)
-     * @param other
-     * @return the difference of the current fraction and other
-     */
     public Fraction subtract(Fraction other){
-   	//STUB
+	BigInteger oldDenominator = denominator;
+	denominator = denominator.multiply(other.denominator);
+	numerator = other.denominator.multiply(numerator);
+	BigInteger toAdd = other.numerator.multiply(oldDenominator);
+	numerator = numerator.subtract(toAdd);
+	this.simplify();
    	return null;
        }//subtract(Fraction)
     
-    /**
-     * multiply(Fraction)
-     * @param other
-     * @return the product of the current Fraction and other
-     */
     public Fraction multiply(Fraction other){
 	numerator = numerator.multiply(other.numerator);
 	denominator = denominator.multiply(other.denominator);
 	this.simplify();
    	return null;
-       }//multiply(Fraction)
-    /**
-     * divide (Fraction)
-     * @param other
-     * @return the quotient of the current Fraction and other
-     */
+       }//add(Fraction)
+    
     public Fraction divide(Fraction other){
-   	//STUB
+	numerator = denominator.multiply(other.numerator);
+	denominator = numerator.multiply(other.denominator);
+	this.simplify();
    	return null;
-       }//divide(Fraction)
+       }//add(Fraction)
     
     public Fraction pow(Fraction other){
    	//STUB
    	return null;
-       }//pow(Fraction)
+       }//add(Fraction)
 
     //OBSERVERS
     
@@ -298,7 +272,7 @@ public class Fraction {
     
     public int compareTo(Fraction other){
 	//STUB
-	return 0;
+	return this.subtract(other).numerator.intValue();
     }//compareTo(Fraction)
     
     public boolean equals(Fraction other){
