@@ -106,7 +106,7 @@ public class Fraction {
 	} else if (dotIndex > 0){
 	    BigInteger wholePart = new BigInteger(valStr.substring(0, dotIndex));
 	    BigInteger decPart = new BigInteger(valStr.substring(dotIndex+1, len));
-	    int decPlaces = len - dotIndex + 1;
+	    int decPlaces = len - (dotIndex + 1);
 	    
 	    this.denominator = BigInteger.TEN.pow(decPlaces);
 	    this.numerator = decPart.add(wholePart.multiply(this.denominator));
@@ -145,7 +145,7 @@ public class Fraction {
 		    BigInteger wholePart = new BigInteger(val.substring(0, dotIndex));
 		    BigInteger decPart = new BigInteger(val.substring(dotIndex+1, len));
 
-		    int decPlaces = len - dotIndex + 1;
+		    int decPlaces = len - (dotIndex + 1);
 		    this.denominator = BigInteger.TEN.pow(decPlaces);
 		    this.numerator = decPart.add(wholePart.multiply(this.denominator));
 		    this.simplify(); 
