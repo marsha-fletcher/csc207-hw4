@@ -138,7 +138,15 @@ public class Fraction {
 					.valueOf(len - 1));
 		}
 	}// Fraction(double)
-
+	
+	/**
+	 * Fraction(string)
+	 * @param val
+	 * 		, a string in one of the following formats:
+	 * 		"##", "#/#", "#.#", ".##" (where # is any numeral)
+	 * @throws Exception 
+	 * 		when the string is in the format "#/0"
+	 */
 	public Fraction(String val) throws Exception {
 		int len = val.length();
 		int slashIndex = val.indexOf('/');
@@ -203,6 +211,13 @@ public class Fraction {
 	 ***************************************************************/
 	// OPERATIONS
 
+	/**
+	 * add(Fraction)
+	 * @param other
+	 * 		, a fraction
+	 * @return sum
+	 * 		, the sum of the current fraction and other
+	 */
 	public Fraction add(Fraction other) {
 
 		BigInteger oldDenominator = denominator;
@@ -214,6 +229,13 @@ public class Fraction {
 		return null;
 	}// add(Fraction)
 
+	/**
+	 * subtract(Fraction)
+	 * @param other
+	 * 		, a Fraction
+	 * @return diff
+	 * 		, the difference of the current fraction and other (this - other)
+	 */
 	public Fraction subtract(Fraction other) {
 		BigInteger oldDenominator = denominator;
 		denominator = denominator.multiply(other.denominator);
@@ -224,6 +246,13 @@ public class Fraction {
 		return null;
 	}// subtract(Fraction)
 
+	/**
+	 * multiply(Fraction)
+	 * @param other
+	 * 		, a Fraction
+	 * @return product
+	 * 		, the product of the current fraction and other
+	 */
 	public Fraction multiply(Fraction other) {
 		numerator = numerator.multiply(other.numerator);
 		denominator = denominator.multiply(other.denominator);
@@ -231,6 +260,13 @@ public class Fraction {
 		return null;
 	}// add(Fraction)
 
+	/**
+	 * divide(Fraction)
+	 * @param other
+	 * 		, a fraction
+	 * @return quotient
+	 * 		, the quotient of the current fraction and other (this / other)
+	 */
 	public Fraction divide(Fraction other) {
 		numerator = denominator.multiply(other.numerator);
 		denominator = numerator.multiply(other.denominator);
@@ -305,8 +341,8 @@ public class Fraction {
 	}// clone()
 
 	public int compareTo(Fraction other) {
-		// STUB
-		return this.subtract(other).numerator.intValue();
+	    	
+		return this.subtract(other).numerator.signum();
 	}// compareTo(Fraction)
 
 	
