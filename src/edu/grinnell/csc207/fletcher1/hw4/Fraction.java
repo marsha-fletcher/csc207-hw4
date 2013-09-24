@@ -155,7 +155,7 @@ public class Fraction {
 			this.numerator = new BigInteger(val.substring(0, slashIndex));
 			this.denominator = new BigInteger(
 					val.substring(slashIndex + 1, len));
-			if (this.denominator == BigInteger.ZERO) {
+			if (this.denominator.equals(BigInteger.ZERO)) {
 				throw new Exception("The denominator cannot be zero");
 			}// Check for denominator = 0
 			this.simplify();
