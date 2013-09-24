@@ -3,7 +3,7 @@ package edu.grinnell.csc207.fletcher1.hw4;
 import java.math.*;
 
 /**
- * 
+ * @class Fraction
  * @author Marsha Fletcher
  * @author Evan Manuella
  * @author Daniel Nanetti-Palacios
