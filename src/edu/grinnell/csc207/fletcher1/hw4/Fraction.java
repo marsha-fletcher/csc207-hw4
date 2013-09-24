@@ -8,6 +8,7 @@ import java.math.*;
  * @author Evan Manuella
  * @author Daniel Nanetti-Palacios
  * @author Brennan Wallace
+ * @author CSC 207 2013F
  */
 
 public class Fraction {
