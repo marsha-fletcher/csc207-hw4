@@ -191,7 +191,10 @@ public class Fraction {
 	/***************************************************************
 	 * -----------------------Private Methods-----------------------*
 	 ***************************************************************/
-
+	/**
+	 * Changes this Fraction to its simplest possible form so that 
+	 * this.denom is not a factor of this.numerator
+	 */
 	private void simplify() {
 		BigInteger gcd = numerator.gcd(denominator);
 		denominator = denominator.divide(gcd);
@@ -199,6 +202,10 @@ public class Fraction {
 		this.cleanup();
 	}// simplify()
 
+	/**
+	 * Changes this Fraction so that denominator is not negative, but the 
+	 * fraction's sign is still the same
+	 */
 	private void cleanup() {
 		if (this.denominator.compareTo(BigInteger.ZERO) < 0) {
 			this.denominator = this.denominator.negate();
@@ -218,15 +225,11 @@ public class Fraction {
 	 * @return sum
 	 * 		, the sum of the current fraction and other
 	 */
-	public Fraction add(Fraction other) {
+	public Fraction add(Fraction other) throws Exception{
+	    BigInteger toAdd = other.numerator.multiply(this.denominator);
 
-		BigInteger oldDenominator = denominator;
-		denominator = denominator.multiply(other.denominator);
-		numerator = other.denominator.multiply(numerator);
-		BigInteger toAdd = other.numerator.multiply(oldDenominator);
-		numerator = numerator.add(toAdd);
-		this.simplify();
-		return null;
+	    return new Fraction(this.numerator.add(toAdd),
+		    this.denominator.multiply(other.denominator));
 	}// add(Fraction)
 
 	/**
@@ -236,14 +239,11 @@ public class Fraction {
 	 * @return diff
 	 * 		, the difference of the current fraction and other (this - other)
 	 */
-	public Fraction subtract(Fraction other) {
-		BigInteger oldDenominator = denominator;
-		denominator = denominator.multiply(other.denominator);
-		numerator = other.denominator.multiply(numerator);
-		BigInteger toAdd = other.numerator.multiply(oldDenominator);
-		numerator = numerator.subtract(toAdd);
-		this.simplify();
-		return null;
+	public Fraction subtract(Fraction other) throws Exception{
+	    BigInteger toAdd = other.numerator.multiply(this.denominator);
+
+	    return new Fraction(this.numerator.subtract(toAdd), 
+		    this.denominator.multiply(other.denominator));
 	}// subtract(Fraction)
 
 	/**
@@ -253,12 +253,10 @@ public class Fraction {
 	 * @return product
 	 * 		, the product of the current fraction and other
 	 */
-	public Fraction multiply(Fraction other) {
-		numerator = numerator.multiply(other.numerator);
-		denominator = denominator.multiply(other.denominator);
-		this.simplify();
-		return null;
-	}// add(Fraction)
+	public Fraction multiply(Fraction other) throws Exception{
+	    return new Fraction (this.numerator.multiply(other.numerator),
+		    this.denominator.multiply(other.denominator));
+	}// multiply(Fraction)
 
 	/**
 	 * divide(Fraction)
@@ -267,17 +265,20 @@ public class Fraction {
 	 * @return quotient
 	 * 		, the quotient of the current fraction and other (this / other)
 	 */
-	public Fraction divide(Fraction other) {
-		numerator = denominator.multiply(other.numerator);
-		denominator = numerator.multiply(other.denominator);
-		this.simplify();
-		return null;
-	}// add(Fraction)
+	public Fraction divide(Fraction other) throws Exception{
+		return new Fraction(this.denominator.multiply(other.numerator), 
+			this.numerator.multiply(other.denominator));
+	}// divide(Fraction)
 
-	public Fraction pow(Fraction other) {
-		// STUB
-		return null;
-	}// add(Fraction)
+	/**
+	 * pow(Fraction)
+	 * @param other
+	 * @return power
+	 * 		, the result of raising this Fraction to other
+	 */
+	public Fraction pow(int other) throws Exception{
+		return new Fraction(this.numerator.pow(other), this.denominator.pow(other));
+	}// pow(Fraction)
 
 	// OBSERVERS
 
@@ -341,8 +342,12 @@ public class Fraction {
 	}// clone()
 
 	public int compareTo(Fraction other) {
-	    	
+	    	try {
 		return this.subtract(other).numerator.signum();
+	    	} catch (Exception e){
+	    	    return 0; //This exists because anything using our 
+	    	    //constructors wants us to handle exceptions
+	    	}
 	}// compareTo(Fraction)
 
 	
