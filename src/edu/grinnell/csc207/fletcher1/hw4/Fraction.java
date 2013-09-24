@@ -228,7 +228,7 @@ public class Fraction {
     public Fraction add(Fraction other) throws Exception{
 	BigInteger toAdd = other.numerator.multiply(this.denominator);
 
-	return new Fraction(this.numerator.add(toAdd),
+	return new Fraction(this.numerator.multiply(other.denominator).add(toAdd),
 		this.denominator.multiply(other.denominator));
     }// add(Fraction)
 
@@ -242,7 +242,7 @@ public class Fraction {
     public Fraction subtract(Fraction other) throws Exception{
 	BigInteger toAdd = other.numerator.multiply(this.denominator);
 
-	return new Fraction(this.numerator.subtract(toAdd), 
+	return new Fraction(this.numerator.multiply(other.denominator).subtract(toAdd), 
 		this.denominator.multiply(other.denominator));
     }// subtract(Fraction)
 
