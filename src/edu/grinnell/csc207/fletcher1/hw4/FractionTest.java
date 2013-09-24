@@ -16,6 +16,11 @@ public class FractionTest {
 		Fraction test3 = new Fraction(BigInteger.valueOf(3),
 				BigInteger.valueOf(2));
 		Fraction test4 = new Fraction(0.75);
+		Fraction test5 = new Fraction((long) 5);
+		Fraction test6 = new Fraction((long) 12, (long) 16);
+		Fraction test7 = new Fraction("3/4");
+		Fraction test8 = new Fraction("450/2");
+		Fraction test9 = new Fraction("5/100");
 		assertEquals(BigInteger.valueOf(3), test0.numerator);
 		assertEquals(BigInteger.valueOf(4), test0.denominator);
 		assertEquals(BigInteger.valueOf(3), test1.numerator); // Simplify test
@@ -33,6 +38,34 @@ public class FractionTest {
 		
 		assertEquals(test0, test1);
 		assertEquals(true, test0.equals(test1));
+		assertEquals(test2, test5);
+		assertEquals(test0, test6);
+		assertEquals(test0, test7);
+		assertEquals(BigInteger.valueOf(225), test8.numerator);
+		assertEquals(BigInteger.valueOf(1), test8.denominator);
+		assertEquals(BigInteger.valueOf(1), test9.numerator);
+		assertEquals(BigInteger.valueOf(20), test9.denominator);
+		// Zero Exception Tests
+		try {
+	        Fraction f = new Fraction(1,0);
+	        fail("The denominator cannot be zero");
+	    } catch (Exception e) {
+	    }
+		try {
+	        Fraction f = new Fraction(BigInteger.ONE, BigInteger.ZERO);
+	        fail("The denominator cannot be zero");
+	    } catch (Exception e) {
+	    }
+		try {
+	        Fraction f = new Fraction((long) 1,(long) 0);
+	        fail("The denominator cannot be zero");
+	    } catch (Exception e) {
+	    }
+		try {
+	        Fraction f = new Fraction("1/0");
+	        fail("The denominator cannot be zero");
+	    } catch (Exception e) {
+	    }
 	}
 
 }
