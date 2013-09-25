@@ -2,6 +2,7 @@ package edu.grinnell.csc207.fletcher1.hw4;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.junit.Test;
@@ -27,17 +28,19 @@ public class FractionTest {
 		assertEquals(BigInteger.valueOf(4), test0.denominator);
 		assertEquals(BigInteger.valueOf(3), test1.numerator); // Simplify test
 		assertEquals(BigInteger.valueOf(4), test1.denominator); // Simplify test
-		// assertEquals(test1, new Fraction(3, 4));
 		assertEquals(BigInteger.valueOf(5), test2.numerator); // Fraction(int
 																// num) test
 		assertEquals(BigInteger.valueOf(1), test2.denominator); // Fraction(int
 																// num) test
+		assertEquals(BigInteger.valueOf(3), test3.numerator);
+		assertEquals(BigInteger.valueOf(2), test3.denominator);
 		assertEquals(BigInteger.valueOf(3), test5.numerator); // Fraction(double
 																// val) test
 		assertEquals(BigInteger.valueOf(4), test5.denominator); // Fraction(double
 																// val) test
 		// assertEquals("The denominator cannot be zero", new Fraction (3, 0));
 		assertEquals(true, test0.equals(test1)); // 6/8 = 3/4
+		assertEquals(true, test2.equals(test4));
 		assertEquals(true, test2.equals(test6)); 
 		assertEquals(true, test2.equals(test7));
 		assertEquals(true, test0.equals(test8));
@@ -149,8 +152,6 @@ public class FractionTest {
 		Fraction add3 = new Fraction(-1, 4);
 		Fraction add4 = new Fraction(-1, 2);
 		
-		Fraction add5 = new Fraction(-3, 2);
-		
 		assertEquals("Subtract two positive fractions, diff = 0",
 				zero, add1.subtract(add1));
 		assertEquals("Subtract two positive fractions, diff > 0",
@@ -165,5 +166,195 @@ public class FractionTest {
 		assertEquals("Subtract two negative fractions, diff < 0",
 				add3, add4.subtract(add3));
 	}//testSubtract
+	
+	@Test
+	public void testMultiply() throws Exception {
+		Fraction zero = new Fraction(0);
+		Fraction one = new Fraction(1);
+		Fraction negaone = new Fraction(-1);
+		Fraction multi1 = new Fraction(1, 2);
+		Fraction multi2 = new Fraction(-1, 2);
+		Fraction multi3 = new Fraction(-1, 4);
+		Fraction multi4 = new Fraction(2, 1);
+		
+		assertEquals("Multiply two positive fractions", 
+				multi1, multi1.multiply(one));
+		assertEquals("Multiply two negative fractions", 
+				multi1, multi2.multiply(negaone));
+		assertEquals("Multiply 1 negative and 1 positive fractions", 
+				multi3, multi1.multiply(multi2));
+		assertEquals("Multiply positive fraction by zero", 
+				zero, multi1.multiply(zero));
+		assertEquals("Multiply negative fraction by zero", 
+				zero, multi2.multiply(zero));
+		assertEquals("Multiply inverse", one, multi1.multiply(multi4));
+	}
+	
+	@Test
+	public void testDivide() throws Exception {
+		Fraction zero = new Fraction(0);
+		Fraction one = new Fraction(1);
+		Fraction negaone = new Fraction(-1);
+		Fraction div1 = new Fraction(1, 4);
+		Fraction div2 = new Fraction(-1, 4);
+		
+		assertEquals("Divide two positive fractions", 
+				one, div1.divide(div1));
+		assertEquals("Divide two negative fractions", 
+				div1, div2.divide(negaone));
+		assertEquals("Divide 1 negative and 1 positive fractions", 
+				negaone, div1.divide(div2));
+		try {
+	        div1.divide(zero);
+	        fail("Cannot divide by 0");
+	    } catch (Exception e) {
+	    }
+		
+	}
+	
+	@Test
+	public void testPow() throws Exception {
+		Fraction one = new Fraction(1);
+		Fraction pow1 = new Fraction(2, 4);
+		Fraction pow2 = new Fraction(-2, 4);
+		Fraction pow3 = new Fraction(4, 16);
+		
+		assertEquals("Positive Fraction", pow3, pow1.pow(2));
+		assertEquals("Negative Fraction", pow3, pow2.pow(2));
+		assertEquals("Power of 0", one, pow3.pow(0));
+	}
 
+	@Test
+	public void testdoubleVal() throws Exception{
+		Fraction dub1 = new Fraction(1, 2);
+		Fraction dub2 = new Fraction(5);
+		Fraction dub3 = new Fraction(-1, 2);
+		Fraction dub4 = new Fraction(3, 2);
+		Fraction dub5 = new Fraction(1, 3);
+		
+		assertEquals(0.5, dub1.doubleValue(), 0.001);
+		assertEquals(5.0, dub2.doubleValue(), 0.001);
+		assertEquals(-0.5, dub3.doubleValue(), 0.001);
+		assertEquals(1.5, dub4.doubleValue(), 0.001);
+		assertEquals(0.333, dub5.doubleValue(), 0.001);
+	}
+	
+	@Test
+	public void testBigDecimalValue() throws Exception{
+		Fraction bigdub1 = new Fraction(1, 2);
+		Fraction bigdub2 = new Fraction(5);
+		Fraction bigdub3 = new Fraction(-1, 2);
+		Fraction bigdub4 = new Fraction(3, 2);
+		
+		assertEquals("Positive Fraction < 1", 
+				BigDecimal.valueOf(0.5), bigdub1.BigDecimalValue());
+		assertEquals("Positive Fraction > 1", 
+				BigDecimal.valueOf(5), bigdub2.BigDecimalValue());
+		assertEquals("Negative Fraction > -1", 
+				BigDecimal.valueOf(-0.5), bigdub3.BigDecimalValue());
+		assertEquals("Positive Fraction > 1",
+				BigDecimal.valueOf(1.5), bigdub4.BigDecimalValue());
+	}
+	
+	@Test
+	public void testreciprocal() throws Exception{
+		Fraction rec1 = new Fraction(3, 7);
+		Fraction rec2 = new Fraction(7, 3);
+		Fraction rec3 = new Fraction(-3, 7);
+		Fraction rec4 = new Fraction(-7, 3);
+		Fraction rec0 = new Fraction(0, 1);
+		
+		assertEquals("Positive Fraction", rec2, rec1.reciprocal());
+		assertEquals("Negative Fraction", rec4, rec3.reciprocal());
+		try {
+	        rec0.reciprocal();
+	        fail("Cannot have 0 as the denominator");
+	    } catch (Exception e) {
+	    }
+	}
+	
+	@Test
+	public void testnegate() throws Exception{
+		Fraction neg1 = new Fraction(4, 9);
+		Fraction neg2 = new Fraction(-4, 9);
+		
+		assertEquals("Positive Fraction", neg2, neg1.negate());
+		assertEquals("Negative Fraction", neg1, neg2.negate());
+	}
+	
+	@Test
+	public void testfractionalPart() throws Exception{
+		Fraction frac1 = new Fraction(7, 2);
+		Fraction frac2 = new Fraction(-7, 2);
+		Fraction frac = new Fraction(1, 2);
+		
+		assertEquals("Positive Fraction", frac, frac1.fractionalPart());
+		assertEquals("Positive Fraction", frac, frac2.fractionalPart());	
+	}
+	
+	@Test
+	public void testwholePart() throws Exception{
+		Fraction whole1 = new Fraction(6, 2);
+		Fraction whole2 = new Fraction(-6, 2);
+		Fraction whole3 = new Fraction(7, 2);
+		Fraction whole4 = new Fraction(-7, 2);
+		
+		assertEquals("Positive Fraction with no Fractional",
+				BigInteger.valueOf(3), whole1.wholePart());
+		assertEquals("Negative Fraction with no Fractional",
+				BigInteger.valueOf(-3), whole2.wholePart());
+		assertEquals("Positive Fraction with Fractional",
+				BigInteger.valueOf(3), whole3.wholePart());
+		assertEquals("Negative Fraction with Fractional",
+				BigInteger.valueOf(-3), whole4.wholePart());
+	}
+	
+	
+	@Test
+	public void testtoString() throws Exception{
+		Fraction str1 = new Fraction(1, 2);
+		Fraction str2 = new Fraction(-1, 2);
+		Fraction str3 = new Fraction(25, 24);
+		
+		assertEquals("Positive Fraction", "1/2", str1.toString());
+		assertEquals("Negative Fraction", "-1/2", str2.toString());
+		assertEquals("Fraction with multiple digits in numerator and denominator",
+				"25/24", str3.toString());
+	}
+	
+	@Test
+	public void testclone() throws Exception{
+		Fraction original = new Fraction(1, 2);
+		Fraction clone = new Fraction(1, 2);
+		
+		assertEquals("Cloning", clone, original.clone());
+	}
+	
+	@Test
+	public void testcompareTo() throws Exception{
+		Fraction less = new Fraction(1, 4);
+		Fraction more = new Fraction(1, 2);
+		
+		assertEquals("Fractions are the same", 0, less.compareTo(less));
+		assertEquals("Fraction is less than", -1, less.compareTo(more));
+		assertEquals("Fraction is more than", 1, more.compareTo(less));
+	}
+	
+	@Test
+	public void testHashCode() throws Exception{
+		Fraction a = new Fraction(-3, 10);
+		Fraction b = new Fraction(330, 100);
+		Fraction c = new Fraction(-6, -72);
+		//We realize that this is somewhat redundant, but it seemed wrong to 
+		//not test hashCode, and we couldn't think of any other way to do so
+		
+		assertEquals("Test a", (a.numerator.hashCode() * a.denominator.hashCode()),
+				a.hashCode());
+		assertEquals("Test b", (b.numerator.hashCode() * b.denominator.hashCode()),
+				b.hashCode());
+		assertEquals("Test c", (c.numerator.hashCode() * c.denominator.hashCode()),
+				c.hashCode());
+	}
 }
+
+
