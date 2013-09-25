@@ -266,8 +266,12 @@ public class Fraction {
      * 		, the quotient of the current fraction and other (this / other)
      */
     public Fraction divide(Fraction other) throws Exception{
+	if (other.numerator.equals(BigInteger.ZERO)){
+	    throw new Exception ("Cannot divide by zero");
+	} else {
 	return new Fraction(this.denominator.multiply(other.numerator), 
 		this.numerator.multiply(other.denominator));
+	}//if/else
     }// divide(Fraction)
 
     /**
