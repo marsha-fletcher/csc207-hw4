@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 public class UserInterface {
 
-	public static void main(String [ ] args){
+	public static void main(String [ ] args) throws Exception{
 		Scanner reader = new Scanner(System.in);
 		String input;
-		BigInteger output;
+		Fraction output;
 		Calculator calculator = new Calculator();
 		while (true){
 			input = reader.nextLine();
@@ -18,7 +18,7 @@ public class UserInterface {
 			else{
 
 				try{
-					output = calculator.evaluate(input);
+					output = calculator.calculate(input);
 					System.out.println(output);
 				}
 				catch(NumberFormatException ex)
