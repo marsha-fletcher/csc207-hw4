@@ -269,8 +269,8 @@ public class Fraction {
 	if (other.numerator.equals(BigInteger.ZERO)){
 	    throw new Exception ("Cannot divide by zero");
 	} else {
-	return new Fraction(this.denominator.multiply(other.numerator), 
-		this.numerator.multiply(other.denominator));
+	return new Fraction(this.numerator.multiply(other.denominator), 
+		this.denominator.multiply(other.numerator));
 	}//if/else
     }// divide(Fraction)
 
