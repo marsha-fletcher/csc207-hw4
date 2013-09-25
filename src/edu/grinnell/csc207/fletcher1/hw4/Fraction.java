@@ -8,6 +8,7 @@ import java.math.*;
  * @author Evan Manuella
  * @author Daniel Nanetti-Palacios
  * @author Brennan Wallace
+ * @author CSC 207 2013F
  */
 
 public class Fraction {
@@ -227,7 +228,7 @@ public class Fraction {
     public Fraction add(Fraction other) throws Exception{
 	BigInteger toAdd = other.numerator.multiply(this.denominator);
 
-	return new Fraction(this.numerator.add(toAdd),
+	return new Fraction(this.numerator.multiply(other.denominator).add(toAdd),
 		this.denominator.multiply(other.denominator));
     }// add(Fraction)
 
@@ -241,7 +242,7 @@ public class Fraction {
     public Fraction subtract(Fraction other) throws Exception{
 	BigInteger toAdd = other.numerator.multiply(this.denominator);
 
-	return new Fraction(this.numerator.subtract(toAdd), 
+	return new Fraction(this.numerator.multiply(other.denominator).subtract(toAdd), 
 		this.denominator.multiply(other.denominator));
     }// subtract(Fraction)
 
@@ -265,8 +266,12 @@ public class Fraction {
      * 		, the quotient of the current fraction and other (this / other)
      */
     public Fraction divide(Fraction other) throws Exception{
-	return new Fraction(this.denominator.multiply(other.numerator), 
-		this.numerator.multiply(other.denominator));
+	if (other.numerator.equals(BigInteger.ZERO)){
+	    throw new Exception ("Cannot divide by zero");
+	} else {
+	return new Fraction(this.numerator.multiply(other.denominator), 
+		this.denominator.multiply(other.numerator));
+	}//if/else
     }// divide(Fraction)
 
     /**

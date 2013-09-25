@@ -3,6 +3,13 @@ package edu.grinnell.csc207.fletcher1.hw4;
 
 public class Calculator {
 
+    Fraction[] memory;
+    
+    public Calculator(){
+	this.memory = new Fraction[8];
+    }//Constructor
+
+
 
 	/**
 	 * eval0
@@ -43,63 +50,10 @@ public class Calculator {
 		return toReturn;
 	}
 
-	/*	public static Fraction calculate(String expression) throws Exception{
-		if (expression.length() == 0){
-			return new Fraction("0");
-		} else if (expression.indexOf(' ') < 0){
-			return new Fraction(expression);
-		} else {
-			String[] expParts = StringUtils.splitAt(expression, ' ');
-			Fraction result = new Fraction (expParts[0]);
-			int maxIndex = expParts.length - 1;
-			char operator;
-			String nextElement;
-			Fraction nextNum;
 
-			for (int i = 1; i < maxIndex; i+=2){
-				operator = expParts[i].charAt(0);
-				nextNum = new Fraction(expParts[1 + i]);
-
-				switch (operator){
-				case '+':
-					result = result.add(nextNum);
-					break;
-				case '-': //where be the comments?!?!?!?
-					result = result.subtract(nextNum);
-					break;
-				case '*':
-					result = result.multiply(nextNum);
-					break;
-				case '/':
-					result = result.divide(nextNum);
-					break;
-				case '^':
-					result = result.pow(nextNum.numerator().intValue());
-				}//switch
-			}//for
-
-			return result;
-		}//has spaces
-	}//eval0
-	 */
-	//private
 
 	public static Fraction calculate(String expression) throws Exception{
-		/*Fraction result = new Fraction(0);
-		String current;
-		String operator; 
-		String next;
-		expression = expression.trim();
-		int ind;
-		int len = expression.length();
-		while (! (expression.equals(""))){
-			ind = expression.indexOf(     ' ');
-			current = expression.substring(0, ind);
-			expression = expression.substring(ind + 1);
-			operator = expression.substring(0, ind);
-		}
 
-		 */
 		expression = expression.trim();
 		int ind;
 		char operatorChar;
@@ -161,6 +115,6 @@ public class Calculator {
 		}
 
 		return runningTotal;
+	}
 
-	}	
-}
+}//Calculator
